@@ -10,14 +10,17 @@ import {
 
 const App = () => {
   const [todoList, setTodoList] = useState([]);
-  const [todo, setTodo] = useState({id: 0, task: ''});
+  const [id, setId] = useState(0);
+  const [todo, setTodo] = useState('');
   const todoAdder = () => {
-    setTodoList([...todoList, todo]);
-    console.log(todoList);
+    setId(id + 1);
+    setTodoList([...todoList, {task: todo, id}]);
+    setTodo('');
   };
-  function deleteItem(id) {
-    const newList = todoList.filter(item => item.id !== id);
-    setTodoList([...newList]);
+  function deleteItem(data) {
+    const newArr = todoList.filter(item => item.id != data.id);
+    setTodoList(newArr);
+    console.log(todoList);
   }
   return (
     <View style={styles.body}>
@@ -27,9 +30,10 @@ const App = () => {
       <View style={styles.container}>
         <View style={styles.InputContainer}>
           <TextInput
+            value={todo}
             style={styles.inp}
             placeholder="Buy milk , go to shop ... etc"
-            onChangeText={input => setTodo({id: todoList.id => prev + 1, task: input})}
+            onChangeText={input => setTodo(input)}
           />
           <Button onPress={todoAdder} title="add">
             Add
@@ -43,8 +47,8 @@ const App = () => {
                 <Text>{item.task}</Text>
                 <Button
                   title="del"
-                  onPress={item => {
-                    deleteItem(item.id);
+                  onPress={() => {
+                    deleteItem(item);
                   }}>
                   del
                 </Button>
